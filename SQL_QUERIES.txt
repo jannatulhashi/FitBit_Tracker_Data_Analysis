@@ -1,0 +1,213 @@
+1-- What is the average number of steps taken per day by each user?
+
+SELECT Id, AVG(TotalSteps) AS Average_Steps
+FROM `fitbitsql.daily_activity_merged.activity`
+GROUP BY Id;
+
+2-- On which day did each user burn the most calories, and how many calories were burned?
+
+WITH RankedCalories AS (
+    SELECT Id, ActivityDay, Calories,
+           RANK() OVER (PARTITION BY Id ORDER BY Calories DESC) as CalorieRank
+    FROM `fitbitsql.daily_calories_merged.calories`
+)
+SELECT Id, ActivityDay, Calories
+FROM RankedCalories
+WHERE CalorieRank = 1;
+
+3-- How does daily total distance vary across different days for each user?
+
+SELECT Id,ActivityDate,ROUND(TotalDistance,2) AS TotalDistance
+FROM `fitbitsql.daily_activity_merged.activity`
+
+4-- What are the average sleep time and average sedentary time for each user?
+
+SELECT sleep.Id, Round(AVG(sleep.TotalMinutesAsleep),2) AS AVG_Sleep_Time, 
+ROUND(AVG(intensity.SedentaryMinutes),2) AS AVG_Sedentary_Time
+FROM `fitbitsql.sleep_day_merged.sleepday` AS sleep
+INNER JOIN `fitbitsql.daily_intensities_merged.intensities` AS intensity
+ON sleep.Id = intensity.Id AND sleep.SleepDay = intensity.ActivityDay
+GROUP BY sleep.Id;
+
+5-- Which users have the highest variability in their heart rate readings?
+
+SELECT Id, ROUND(STDDEV(Value),2) AS Heart_Rate_Variability
+FROM `fitbitsql.heartrate_seconds_merged.heartrate`
+GROUP BY Id
+ORDER BY Heart_Rate_Variability  DESC;
+
+6-- How does the weight of users change over time?
+
+SELECT Id, Date,WeightKg
+FROM `fitbitsql.weight_log_info_merged.weight`
+
+7-- What is the distribution of active vs sedentary minutes for each user?
+
+SELECT Id, ActivityDay, LightlyActiveMinutes, FairlyActiveMinutes, VeryActiveMinutes, SedentaryMinutes
+FROM `fitbitsql.daily_intensities_merged.intensities`
+ORDER BY ActivityDay;
+ORDER BY Id, Date;
+
+8-- What are the total steps and total distance covered by each user on days when they were highly active?
+
+SELECT Id, ActivityDate, TotalSteps, ROUND(TotalDistance,2) AS TotalDistance
+FROM `fitbitsql.daily_activity_merged.activity`
+WHERE VeryActiveMinutes > 0
+ORDER BY ActivityDate;
+
+9-- What is the average BMI of users, and how does it relate to their average active minutes?
+
+SELECT a.Id, ROUND(AVG(b.BMI), 2) AS Avg_BMI, 
+  ROUND(AVG(a.LightlyActiveMinutes + a.FairlyActiveMinutes + a.VeryActiveMinutes), 2) AS Avg_Active_Minutes
+FROM `fitbitsql.daily_intensities_merged.intensities` AS a
+INNER JOIN `fitbitsql.weight_log_info_merged.weight` AS b 
+ON a.Id = b.Id AND a.ActivityDay = b.Date
+GROUP BY a.Id;
+
+10-- What is the highest heart rate reached by each user on each day?
+
+SELECT Id,Date, MAX(Value) AS Peak_Heart_Rate
+FROM `fitbitsql.heartrate_seconds_merged.heartrate`
+GROUP BY  Id, Date
+ORDER BY Peak_Heart_Rate DESC;
+
+11-- How does sleep quality relate to the total calories burned?
+
+SELECT s.Id, s.SleepDay, s.TotalMinutesAsleep, s.TotalTimeInBed, c.Calories
+FROM `fitbitsql.sleep_day_merged.sleepday` AS s
+INNER JOIN `fitbitsql.daily_calories_merged.calories` AS c
+ON s.Id = c.Id AND s.SleepDay = c.ActivityDay
+ORDER BY s.SleepDay;
+
+12-- How many calories does each user burn on average during weekdays versus weekends?
+  SELECT Id,
+  CASE 
+    WHEN EXTRACT(DAYOFWEEK FROM ActivityDate) BETWEEN 2 AND 6 THEN 'Weekday'
+    ELSE 'Weekend'
+  END AS Day_Type,ROUND(AVG(Calories),2) AS Avg_Calories
+FROM `fitbitsql.daily_activity_merged.activity`
+GROUP BY Id, Day_Type
+ORDER BY Id, Day_Type;
+
+13-- What is the combined overview of each user's daily activity, including steps, sleep, and calories burned?
+
+SELECT a.Id, a.ActivityDate, SUM(a.TotalSteps) AS Sum_TotalSteps, MAX(s.TotalMinutesAsleep) AS Max_Total_Sleep, MAX(c.Calories) AS MAX_Calories
+FROM `fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN `fitbitsql.sleep_day_merged.sleepday` AS s
+ON a.Id = s.Id AND a.ActivityDate = s.SleepDay
+INNER JOIN `fitbitsql.daily_calories_merged.calories` AS c
+ON a.Id = c.Id AND a.ActivityDate = c.ActivityDay
+WHERE a.TotalSteps IS NOT NULL AND s.TotalMinutesAsleep IS NOT NULL AND c.Calories IS NOT NULL
+GROUP BY a.Id, a.ActivityDate
+ORDER BY a.Id, a.ActivityDate;
+
+14-- How do users' weekly activity levels correlate with changes in their weight?
+
+SELECT a.Id, EXTRACT(WEEK FROM a.ActivityDate) AS WeekNumber, SUM(a.TotalSteps) AS Total_Weekly_Steps,
+ROUND(AVG(s.TotalMinutesAsleep),2) AS AVG_Weekly_Sleep, ROUND(AVG(w.WeightKg),2) AS AVG_Weekly_Weight
+
+FROM `fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN `fitbitsql.sleep_day_merged.sleepday` AS s
+ON a.Id = s.Id AND a.ActivityDate = s.SleepDay
+INNER JOIN `fitbitsql.weight_log_info_merged.weight` AS w
+ON a.Id = w.Id
+
+WHERE EXTRACT(YEAR FROM a.ActivityDate) = EXTRACT(YEAR FROM w.Date)
+GROUP BY a.Id, WeekNumber
+ORDER BY a.Id, WeekNumber;
+
+15-- What is the relationship between users' active minutes and their average heart rate on the same day?
+
+SELECT a.Id, a.ActivityDate,
+(a.VeryActiveMinutes + a.FairlyActiveMinutes + a.LightlyActiveMinutes) AS Total_Active_Minutes,
+ROUND(AVG(h.Value),2) AS AVG_Heart_Rate
+FROM 
+`fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN 
+`fitbitsql.heartrate_seconds_merged.heartrate` AS h
+ON a.Id = h.Id AND a.ActivityDate = h.Date
+GROUP BY 
+a.Id, a.ActivityDate,Total_Active_Minutes
+HAVING 
+Total_Active_Minutes > 0
+ORDER BY 
+a.ActivityDate;
+
+16-- How does users' physical activity during the day impact their sleep patterns?
+
+SELECT a.Id, a.ActivityDate, a.VeryActiveMinutes, a.ModeratelyActiveDistance,
+AVG(s.TotalMinutesAsleep) AS AVG_Sleep,
+AVG(s.TotalTimeInBed - s.TotalMinutesAsleep) AS AVG_Awake_Time
+FROM `fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN `fitbitsql.sleep_day_merged.sleepday` AS s
+ON a.Id = s.Id AND a.ActivityDate = s.SleepDay
+GROUP BY a.Id, a.ActivityDate, a.VeryActiveMinutes, a.ModeratelyActiveDistance
+ORDER BY a.ActivityDate;
+
+17-- How does the weekly total active minutes and calories burned correlate with the changes in users' weight over time?
+
+SELECT a.Id, EXTRACT(WEEK FROM a.ActivityDate) AS Week_Number, 
+SUM(a.VeryActiveMinutes + a.FairlyActiveMinutes + a.LightlyActiveMinutes) AS Total_Active_Minutes,
+SUM(c.Calories) AS Total_Claories,
+ROUND(MAX(w.WeightKg) - MIN(w.WeightKg),2) AS Weight_Change_Kg
+FROM `fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN `fitbitsql.daily_calories_merged.calories` AS c
+ON a.Id = c.Id AND a.ActivityDate = c.ActivityDay
+INNER JOIN `fitbitsql.weight_log_info_merged.weight` AS w
+ON a.Id = w.Id
+GROUP BY a.Id, Week_Number
+Order BY Week_Number;
+
+18--What is the difference in users' resting heart rate on days with high activity compared to days with low activity?
+
+WITH ActiveDays AS (
+  SELECT 
+    Id, 
+    ActivityDate,
+    CASE 
+      WHEN (VeryActiveMinutes + FairlyActiveMinutes) > 60 THEN 'High Activity'
+      ELSE 'Low Activity'
+    END AS ActivityLevel
+  FROM 
+    `fitbitsql.daily_activity_merged.activity`
+),
+RestingHeartRate AS (
+  SELECT 
+    Id, 
+    DATE(Time) AS Date, 
+    MIN(Value) AS RestingRate
+  FROM 
+    `fitbitsql.heartrate_seconds_merged.heartrate`
+  GROUP BY Id, Date
+)
+SELECT 
+  ad.Id,
+  ad.ActivityDate,
+  ad.ActivityLevel,
+  rhr.RestingRate
+FROM 
+  ActiveDays ad
+INNER JOIN 
+  RestingHeartRate rhr ON ad.Id = rhr.Id AND ad.ActivityDate = rhr.Date
+ORDER BY 
+  ad.Id, ad.ActivityDate;
+
+19-- How does users' daily activity and intensity relate to their sleep efficiency?
+
+SELECT a.Id, a.ActivityDate, ROUND(a.VeryActiveDistance,2) AS Very_Active_Distance, 
+ROUND(a.LightActiveDistance,2) AS Light_Active_Distance,
+i.VeryActiveMinutes, i.LightlyActiveMinutes,
+Round((s.TotalMinutesAsleep / s.TotalTimeInBed) * 100,2) AS Sleep_Efficiency
+
+FROM `fitbitsql.daily_activity_merged.activity` AS a
+INNER JOIN `fitbitsql.daily_intensities_merged.intensities` AS i
+ON a.Id = i.Id AND a.ActivityDate = i.ActivityDay
+INNER JOIN `fitbitsql.sleep_day_merged.sleepday` AS s
+ON a.Id = s.Id AND a.ActivityDate = s.SleepDay
+ORDER BY a.ActivityDate;
+
+
+
+
+
+
