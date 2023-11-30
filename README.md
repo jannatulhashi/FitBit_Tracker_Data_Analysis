@@ -25,7 +25,7 @@ In this project, I will use 6 steps to ensure my project's completion:
 
 6: Act
 
-## Step 1: Ask:
+## Step 1: Ask
 
 **Objective:**
 My aim is to identify trends in how consumers use Bellabeat devices. Understanding these usage patterns is essential for developing strategies to foster growth opportunities for Bellabeat and enhance its marketing strategies.
