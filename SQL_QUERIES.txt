@@ -18,7 +18,7 @@ WHERE CalorieRank = 1;
 3-- How does daily total distance vary across different days for each user?
 
 SELECT Id,ActivityDate,ROUND(TotalDistance,2) AS TotalDistance
-FROM `fitbitsql.daily_activity_merged.activity`
+FROM `fitbitsql.daily_activity_merged.activity`;
 
 4-- What are the average sleep time and average sedentary time for each user?
 
@@ -40,6 +40,7 @@ ORDER BY Heart_Rate_Variability  DESC;
 
 SELECT Id, Date,WeightKg
 FROM `fitbitsql.weight_log_info_merged.weight`
+ORDER BY Id, Date;
 
 7-- What is the distribution of active vs sedentary minutes for each user?
 
