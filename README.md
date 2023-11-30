@@ -246,7 +246,7 @@ In this crucial step of my FitBit Tracker Data Analysis project, I present my fi
 
 Sharing the Tableau Dashboards:
 
-***The link to the interactive dashboard will be found under the screenshot below.***
+***The link to the interactive dashboard will be found under the screenshots below.***
 
 ### Dashboard 1: User Activity Patterns
 
