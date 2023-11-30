@@ -246,6 +246,8 @@ In this crucial step of my FitBit Tracker Data Analysis project, I present my fi
 
 Sharing the Tableau Dashboards:
 
+***The link to the interactive dashboard will be found under the screenshot below.***
+
 ### Dashboard 1: User Activity Patterns
 
 ![](Dashboards/Dashboard_1.png)
@@ -275,8 +277,6 @@ The chart shows two different sets of health data for several people over April 
 **Heart Rate:** The top part shows the highest and lowest heart rate recorded for each person in each month. For example, one person's heart rate ranged from 38 to 203 beats per minute in April. This wide range might indicate periods of intense exercise or stress and times of rest or relaxation.
 
 **Sleep Pattern:** The bottom part tracks how much time each person spends in bed, which might not be the same as actual sleep time. For instance, in April, one person had times in bed that ranged from around 3,000 to over 10,000 minutes total for the month. This can show us who is getting more rest and who might not be getting enough.
-
-***The link to the interactive dashboard will be found under the screenshot below.***
 
 [Tableau Dashboard](https://public.tableau.com/app/profile/jannatul.hashi/viz/FitBitTrackerData/Sheet1?publish=yes)
 
