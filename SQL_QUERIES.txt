@@ -46,7 +46,6 @@ FROM `fitbitsql.weight_log_info_merged.weight`
 SELECT Id, ActivityDay, LightlyActiveMinutes, FairlyActiveMinutes, VeryActiveMinutes, SedentaryMinutes
 FROM `fitbitsql.daily_intensities_merged.intensities`
 ORDER BY ActivityDay;
-ORDER BY Id, Date;
 
 8-- What are the total steps and total distance covered by each user on days when they were highly active?
 
@@ -174,7 +173,7 @@ WITH ActiveDays AS (
 RestingHeartRate AS (
   SELECT 
     Id, 
-    DATE(Time) AS Date, 
+    DATE AS Date, 
     MIN(Value) AS RestingRate
   FROM 
     `fitbitsql.heartrate_seconds_merged.heartrate`
