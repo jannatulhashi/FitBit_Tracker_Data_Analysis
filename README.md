@@ -12,6 +12,7 @@ The Bellabeat app provides users with health data related to their activity, sle
 ## Method Approach:
 
 In this project, I will use 6 steps to ensure my project's completion:
+
 1: Ask
 
 2: Prepare
