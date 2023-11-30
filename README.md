@@ -15,17 +15,17 @@ The Bellabeat app provides users with health data related to their activity, sle
 
 In this project, I will use 6 steps to ensure my project's completion:
 
-1: Ask
+**1: Ask**
 
-2: Prepare
+**2: Prepare**
 
-3: Process
+**3: Process**
 
-4: Analyze
+**4: Analyze**
 
-5: Share
+**5: Share**
 
-6: Act
+**6: Act**
 
 ## Step 1: Ask
 
