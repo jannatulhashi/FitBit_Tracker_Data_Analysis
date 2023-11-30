@@ -1,7 +1,7 @@
 # FitBit Tracker Data Analysis
 
 ## Introduction
-Welcome to the FitBit Tracker Data Analysis project, where I dive into the world of smart device fitness data to unlock new growth opportunities for **Bellabeat**. Bellabeat, a rising star in the global smart device market, believes in empowering women through data. Our mission in this project is to analyze fitness data from smart devices, focusing on the Bellabeat app, to uncover insights that could propel Bellabeat to new heights.
+Welcome to the FitBit Tracker Data Analysis project, where I dive into the world of smart device fitness data to unlock new growth opportunities for **Bellabeat**. Bellabeat, a rising star in the global smart device market, believes in empowering women through data. My mission in this project is to analyze fitness data from smart devices, focusing on the Bellabeat app, to uncover insights that could propel Bellabeat to new heights.
 
 ## Bellabeat: Harnessing Health Data
 
