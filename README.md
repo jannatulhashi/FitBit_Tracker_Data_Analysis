@@ -135,7 +135,7 @@ The SQL query assesses heart rate variability by calculating the standard deviat
 
 The above data shows that there is a range of weights among different users, demonstrating the diversity in the dataset. The dates suggest that the data is not from a fixed daily record; some users have measurements that are days apart, while others have longer intervals. This data could be used to track weight changes over time for individual users, which may be helpful for understanding long-term weight trends, the effectiveness of weight management programs, or health outcomes related to weight changes.
 
-### **Query 7***: What is the distribution of active vs sedentary minutes for each user?
+### **Query 7**: What is the distribution of active vs sedentary minutes for each user?
 
 ![](SQL_Queries_Pictures/SQL_query_14.PNG)
 
