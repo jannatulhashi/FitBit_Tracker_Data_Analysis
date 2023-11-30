@@ -42,8 +42,7 @@ My aim is to identify trends in how consumers use Bellabeat devices. Understandi
 
 ## Step 2: Prepare
 
-For this study, I am using datasets from the FitBit Fitness Tracker Data, shared by Möbius on Kaggle under the CC0: Public Domain Creative Commons License. Out of the 18 available datasets, I selected 7 that provide a broad view of the quantitative data tracked by Fitbit devices.
-[FitBit Fitness Tracker Data](https://www.kaggle.com/datasets/arashnic/fitbit).
+For this study, I am using datasets from the [FitBit Fitness Tracker Data](https://www.kaggle.com/datasets/arashnic/fitbit), shared by Möbius on Kaggle under the CC0: Public Domain Creative Commons License. Out of the 18 available datasets, I selected 7 that provide a broad view of the quantitative data tracked by Fitbit devices.
 
  **The 7 datasets I chose for this project:**
  - dailyActivity_merged.csv
