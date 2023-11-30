@@ -33,7 +33,7 @@ My aim is to identify trends in how consumers use Bellabeat devices. Understandi
 **Deliverables:**
 
 - A clear summary of the project objective.
-- 
+  
 - A full documentation of all the data cleaning, manipulation, and analysis.
 
 - Dashboards with visualizations and main outcomes.
