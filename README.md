@@ -70,7 +70,7 @@ After that, I started my work to analyze the data to identify trends using **Big
 
 ## Step 4: Analyze 
 
-Using BigQuery, I ensured that all datasets were imported successfully.
+Using **BigQuery**, I ensured that all datasets were imported successfully.
 
 ![](SQL_Queries_Pictures/SQL_query_1.PNG)
 
@@ -86,7 +86,7 @@ Using BigQuery, I ensured that all datasets were imported successfully.
 
 ![](SQL_Queries_Pictures/SQL_query_7.PNG)
 
-After importing all the datasets successfully in BigQuery, I'll perform **exploratory data analysis (EDA)**  with my input on the FitBit Tracker Datasets. A list of tasks will be answered followed by the query input and query result.
+After importing all the datasets successfully in **BigQuery**, I'll perform **exploratory data analysis (EDA)**  with my input on the FitBit Tracker Datasets. A list of tasks will be answered followed by the query input and query result.
 
 ### **Query 1:** What is the average number of steps taken per day by each user?
 
